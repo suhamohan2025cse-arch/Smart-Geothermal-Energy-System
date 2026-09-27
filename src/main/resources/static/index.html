@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Geothermal Energy System</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f4f7f9;
+        color: #222;
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* ============ SIDEBAR ============ */
+
+    .sidebar {
+        width: 240px;
+        background: #123c4a;
+        color: #eaf3f5;
+        min-height: 100vh;
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+    }
+
+    .sidebar .brand {
+        padding: 22px 18px;
+        border-bottom: 1px solid #1d5266;
+    }
+
+    .sidebar .brand .line1 {
+        font-size: 17px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+
+    .sidebar .brand .line2 {
+        font-size: 12px;
+        color: #a7c6cf;
+        margin-top: 2px;
+    }
+
+    .sidebar nav {
+        flex: 1;
+        padding: 10px 0;
+    }
+
+    .nav-item {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        border: none;
+        color: #d7e8ec;
+        padding: 13px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+        background: #17495c;
+        color: #ffffff;
+    }
+
+    .nav-item.active {
+        background: #0d2c37;
+        color: #ffffff;
+        border-left: 3px solid #4fb3c9;
+        font-weight: bold;
+    }
+
+    /* ============ MAIN CONTENT ============ */
+
+    .main {
+        flex: 1;
+        padding: 28px 34px;
+        min-width: 0;
+    }
+
+    .page {
+        display: none;
+    }
+
+    .page.active {
+        display: block;
+    }
+
+    .page-title {
+        margin: 0 0 4px 0;
+        color: #123c4a;
+    }
+
+    .page-subtitle {
+        margin: 0 0 22px 0;
+        color: #5b7580;
+        font-size: 14px;
+    }
+
+    h2 {
+        color: #123c4a;
+        font-size: 19px;
+    }
+
+    /* ============ CARDS ============ */
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 26px;
+    }
+
+    .card {
+        background: white;
+        padding: 16px 18px;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        border-top: 3px solid #123c4a;
+    }
+
+    .card h3 {
+        margin: 0 0 8px 0;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #607580;
+    }
+
+    .card .value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #123c4a;
+    }
+
+    .card.warning-card {
+        border-top-color: #a33;
+    }
+
+    .card.warning-card .value {
+        color: #a33;
+    }
+
+    /* ============ SECTIONS ============ */
+
+    .section {
+        background: white;
+        padding: 22px;
+        margin-bottom: 22px;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+
+    /* ============ FORMS ============ */
+
+    input, select {
+        padding: 9px 10px;
+        margin: 5px 5px 5px 0;
+        width: 190px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 9px 16px;
+        background: #123c4a;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button:hover {
+        background: #1d6174;
+    }
+
+    button.secondary {
+        background: #7a8a90;
+    }
+
+    button.secondary:hover {
+        background: #5f6e73;
+    }
+
+    button.small {
+        padding: 5px 10px;
+        font-size: 12px;
+        margin: 2px;
+    }
+
+    button.danger {
+        background: #a33;
+    }
+
+    button.danger:hover {
+        background: #c44;
+    }
+
+    /* ============ TABLES ============ */
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        font-size: 14px;
+    }
+
+    th, td {
+        border: 1px solid #e2e2e2;
+        padding: 9px 10px;
+        text-align: left;
+    }
+
+    th {
+        background: #123c4a;
+        color: white;
+        font-weight: normal;
+        font-size: 13px;
+    }
+
+    tr.warning-row {
+        background: #fdecec;
+    }
+
+    .status {
+        padding: 4px 9px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 12px;
+        display: inline-block;
+    }
+
+    .normal {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .warning {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    /* ============ MESSAGES ============ */
+
+    .message {
+        margin-top: 12px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .message.success {
+        color: #155724;
+    }
+
+    .message.error {
+        color: #a33;
+    }
+
+    /* ============ BARS ============ */
+
+    .bar-row {
+        margin-bottom: 14px;
+    }
+
+    .bar-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .bar-track {
+        background: #e6ecee;
+        border-radius: 5px;
+        overflow: hidden;
+        height: 16px;
+    }
+
+    .bar-fill {
+        height: 100%;
+        background: #1d6174;
+    }
+
+    .bar-fill.expense {
+        background: #a33;
+    }
+
+    /* ============ SYSTEM INFO ============ */
+
+    .info-table td:first-child {
+        font-weight: bold;
+        width: 200px;
+        background: #f7f9fa;
+    }
+
+    .info-table ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    /* ============ RESPONSIVE ============ */
+
+    @media (max-width: 820px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            min-height: auto;
+            position: relative;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            width: auto;
+            border-left: none;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-item.active {
+            border-left: none;
+            border-bottom: 3px solid #4fb3c9;
+        }
+
+        input, select {
+            width: 100%;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="brand">
+        <div class="line1">Smart Geothermal</div>
+        <div class="line2">Energy Controller</div>
+    </div>
+
+    <nav>
+        <button class="nav-item active" data-page="dashboard">Dashboard</button>
+        <button class="nav-item" data-page="wells">Well Management</button>
+        <button class="nav-item" data-page="telemetry">Telemetry Monitoring</button>
+        <button class="nav-item" data-page="customers">Customers</button>
+        <button class="nav-item" data-page="sales">Energy Sales</button>
+        <button class="nav-item" data-page="maintenance">Maintenance</button>
+        <button class="nav-item" data-page="reports">Reports</button>
+        <button class="nav-item" data-page="system">System Information</button>
+    </nav>
+</div>
+
+<div class="main">
+
+    <!-- ================= DASHBOARD ================= -->
+    <div id="page-dashboard" class="page active">
+
+        <h1 class="page-title">Smart Geothermal Energy Extraction & Heat Network Controller</h1>
+        <p class="page-subtitle">Geothermal Well and District Heating Management System</p>
+
+        <div class="cards" id="dashboardCards">
+            <div class="card"><h3>Total Wells</h3><div class="value" id="dTotalWells">0</div></div>
+            <div class="card"><h3>Normal Wells</h3><div class="value" id="dNormalWells">0</div></div>
+            <div class="card warning-card"><h3>Pressure Warning Wells</h3><div class="value" id="dWarningWells">0</div></div>
+            <div class="card"><h3>Total Customers</h3><div class="value" id="dTotalCustomers">0</div></div>
+            <div class="card"><h3>Total Energy Sold</h3><div class="value" id="dEnergySold">0 GJ</div></div>
+            <div class="card"><h3>Total Revenue</h3><div class="value" id="dRevenue">₹0</div></div>
+            <div class="card"><h3>Maintenance Expense</h3><div class="value" id="dExpense">₹0</div></div>
+            <div class="card"><h3>Net Operational Amount</h3><div class="value" id="dNet">₹0</div></div>
+        </div>
+
+        <div class="section">
+            <h2>Well Status</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Well ID</th>
+                        <th>Well Name</th>
+                        <th>Location</th>
+                        <th>Temperature</th>
+                        <th>Pressure</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="dashboardWellTable"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Pressure Monitoring &mdash; Recent Telemetry</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Well</th>
+                        <th>Temperature</th>
+                        <th>Pressure</th>
+                        <th>Flow Rate</th>
+                        <th>Pressure Status</th>
+                        <th>Recorded Time</th>
+                    </tr>
+                </thead>
+                <tbody id="dashboardTelemetryTable"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Energy and Financial Overview</h2>
+
+            <div class="bar-row">
+                <div class="bar-label"><span>Total Revenue</span><span id="barRevenueLabel">₹0</span></div>
+                <div class="bar-track"><div class="bar-fill" id="barRevenue" style="width:0%"></div></div>
+            </div>
+
+            <div class="bar-row">
+                <div class="bar-label"><span>Maintenance Expense</span><span id="barExpenseLabel">₹0</span></div>
+                <div class="bar-track"><div class="bar-fill expense" id="barExpense" style="width:0%"></div></div>
+            </div>
+
+            <p><b>Total Energy Sold:</b> <span id="ovEnergy">0</span> GJ &nbsp;|&nbsp;
+               <b>Net Operational Amount:</b> ₹<span id="ovNet">0</span></p>
+        </div>
+
+    </div>
+
+
+    <!-- ================= WELL MANAGEMENT ================= -->
+    <div id="page-wells" class="page">
+
+        <h1 class="page-title">Well Management</h1>
+        <p class="page-subtitle">Add, update, and monitor geothermal wells</p>
+
+        <div class="section">
+
+            <h2 id="wellFormTitle">Add Well</h2>
+
+            <input type="hidden" id="wellId">
+            <input id="wellName" placeholder="Well Name">
+            <input id="location" placeholder="Location">
+            <input id="depth" type="number" placeholder="Depth (m)">
+            <input id="temperature" type="number" placeholder="Temperature">
+            <input id="pressure" type="number" placeholder="Pressure">
+
+            <select id="wellStatus">
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="MAINTENANCE">MAINTENANCE</option>
+                <option value="INACTIVE">INACTIVE</option>
+            </select>
+
+            <br>
+
+            <button onclick="saveWell()" id="wellSaveBtn">Add Well</button>
+            <button class="secondary" onclick="resetWellForm()" type="button">Clear</button>
+
+            <div id="message" class="message"></div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>Wells</h2>
+
+            <button onclick="loadWells()">Refresh Wells</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Well Name</th>
+                        <th>Location</th>
+                        <th>Depth</th>
+                        <th>Temperature</th>
+                        <th>Pressure</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="wellTable"></tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TELEMETRY ================= -->
+    <div id="page-telemetry" class="page">
+
+        <h1 class="page-title">Telemetry Monitoring</h1>
+        <p class="page-subtitle">Record and review well telemetry readings</p>
+
+        <div class="section">
+
+            <h2>Record Telemetry</h2>
+
+            <input id="telemetryWellId" type="number" placeholder="Well ID">
+            <input id="telemetryTemperature" type="number" placeholder="Temperature">
+            <input id="telemetryPressure" type="number" placeholder="Pressure">
+            <input id="flowRate" type="number" placeholder="Flow Rate">
+
+            <br>
+
+            <button onclick="addTelemetry()">Record Telemetry</button>
+
+            <div id="telemetryMessage" class="message"></div>
+            <div id="telemetryResult"></div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>Telemetry History</h2>
+
+            <input id="historyWellId" type="number" placeholder="Well ID">
+            <button onclick="loadTelemetryHistory()">View History</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Temperature</th>
+                        <th>Pressure</th>
+                        <th>Flow Rate</th>
+                        <th>Pressure Status</th>
+                        <th>Recorded At</th>
+                    </tr>
+                </thead>
+                <tbody id="telemetryHistoryTable"></tbody>
+            </table>
+
+        </div>
+
+        <div class="section">
+
+            <h2>Pressure Warnings</h2>
+
+            <button onclick="loadPressureWarnings()">Refresh Warnings</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Well ID</th>
+                        <th>Temperature</th>
+                        <th>Pressure</th>
+                        <th>Flow Rate</th>
+                        <th>Recorded At</th>
+                    </tr>
+                </thead>
+                <tbody id="pressureWarningTable"></tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CUSTOMERS ================= -->
+    <div id="page-customers" class="page">
+
+        <h1 class="page-title">Customer Management</h1>
+        <p class="page-subtitle">District heating customers</p>
+
+        <div class="section">
+
+            <h2 id="customerFormTitle">Add Customer</h2>
+
+            <input type="hidden" id="customerId">
+            <input id="customerName" placeholder="Name">
+            <input id="customerDistrict" placeholder="District">
+            <input id="customerContact" placeholder="Contact">
+
+            <br>
+
+            <button onclick="saveCustomer()" id="customerSaveBtn">Add Customer</button>
+            <button class="secondary" onclick="resetCustomerForm()" type="button">Clear</button>
+
+            <div id="customerMessage" class="message"></div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>Customers</h2>
+
+            <button onclick="loadCustomers()">View Customers</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>District</th>
+                        <th>Contact</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="customerTable"></tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ENERGY SALES ================= -->
+    <div id="page-sales" class="page">
+
+        <h1 class="page-title">Energy Sales</h1>
+        <p class="page-subtitle">Thermal energy sold to district heating customers</p>
+
+        <div class="cards">
+            <div class="card"><h3>Total Energy Sold</h3><div class="value" id="salesTotalEnergy">0 GJ</div></div>
+            <div class="card"><h3>Total Revenue</h3><div class="value" id="salesTotalRevenue">₹0</div></div>
+        </div>
+
+        <div class="section">
+
+            <h2>Record Energy Sale</h2>
+
+            <input id="saleCustomerId" type="number" placeholder="Customer ID">
+            <input id="saleEnergyGJ" type="number" placeholder="Energy Sold (GJ)">
+            <input id="saleAmount" type="number" placeholder="Amount">
+
+            <br>
+
+            <button onclick="addSale()">Add Sale</button>
+
+            <div id="saleMessage" class="message"></div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>Energy Sales</h2>
+
+            <button onclick="loadSales()">Refresh Sales</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sale ID</th>
+                        <th>Customer ID</th>
+                        <th>Energy Sold (GJ)</th>
+                        <th>Amount</th>
+                        <th>Sale Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="saleTable"></tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAINTENANCE ================= -->
+    <div id="page-maintenance" class="page">
+
+        <h1 class="page-title">Well &amp; Pump Maintenance</h1>
+        <p class="page-subtitle">Maintenance activity and cost tracking</p>
+
+        <div class="cards">
+            <div class="card"><h3>Total Maintenance Expense</h3><div class="value" id="maintenanceTotalCost">₹0</div></div>
+        </div>
+
+        <div class="section">
+
+            <h2>Log Maintenance</h2>
+
+            <input id="maintenanceWellId" type="number" placeholder="Well ID">
+            <input id="maintenanceVendor" placeholder="Vendor">
+            <input id="maintenanceDescription" placeholder="Description">
+            <input id="maintenanceCost" type="number" placeholder="Cost">
+
+            <br>
+
+            <button onclick="addMaintenance()">Add Maintenance Record</button>
+
+            <div id="maintenanceMessage" class="message"></div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>Maintenance Records</h2>
+
+            <button onclick="loadMaintenance()">Refresh Records</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Maintenance ID</th>
+                        <th>Well ID</th>
+                        <th>Vendor</th>
+                        <th>Description</th>
+                        <th>Cost</th>
+                        <th>Maintenance Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="maintenanceTable"></tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= REPORTS ================= -->
+    <div id="page-reports" class="page">
+
+        <h1 class="page-title">Reports</h1>
+        <p class="page-subtitle">Operational, energy, maintenance and financial summary</p>
+
+        <button onclick="loadReportsPage()">Refresh Reports</button>
+
+        <div class="section">
+            <h2>Operational Summary</h2>
+            <div class="cards">
+                <div class="card"><h3>Total Wells</h3><div class="value" id="rTotalWells">0</div></div>
+                <div class="card"><h3>Normal Wells</h3><div class="value" id="rNormalWells">0</div></div>
+                <div class="card warning-card"><h3>Pressure Warning Wells</h3><div class="value" id="rWarningWells">0</div></div>
+                <div class="card"><h3>Total Customers</h3><div class="value" id="rTotalCustomers">0</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Energy Summary</h2>
+            <div class="cards">
+                <div class="card"><h3>Total Energy Sold</h3><div class="value" id="rEnergySold">0 GJ</div></div>
+                <div class="card"><h3>Total Revenue</h3><div class="value" id="rRevenue">₹0</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Maintenance Summary</h2>
+            <div class="cards">
+                <div class="card"><h3>Maintenance Expense</h3><div class="value" id="rExpense">₹0</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Financial Summary</h2>
+            <div class="cards">
+                <div class="card"><h3>Net Operational Amount</h3><div class="value" id="rNet">₹0</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Pressure Warning Records</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Well ID</th>
+                        <th>Temperature</th>
+                        <th>Pressure</th>
+                        <th>Flow Rate</th>
+                        <th>Recorded At</th>
+                    </tr>
+                </thead>
+                <tbody id="reportWarningTable"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Recent Energy Sales</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sale ID</th>
+                        <th>Customer ID</th>
+                        <th>Energy Sold (GJ)</th>
+                        <th>Amount</th>
+                        <th>Sale Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reportSalesTable"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Recent Maintenance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Maintenance ID</th>
+                        <th>Well ID</th>
+                        <th>Vendor</th>
+                        <th>Cost</th>
+                        <th>Maintenance Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reportMaintenanceTable"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <!-- ================= SYSTEM INFORMATION ================= -->
+    <div id="page-system" class="page">
+
+        <h1 class="page-title">System Information</h1>
+        <p class="page-subtitle">Technical overview of this project</p>
+
+        <div class="section">
+            <table class="info-table">
+                <tr><td>Project</td><td>Smart Geothermal Energy Extraction & Heat Network Controller</td></tr>
+                <tr><td>Backend</td><td>Java 17 + Spring Boot</td></tr>
+                <tr><td>Database</td><td>MySQL</td></tr>
+                <tr><td>Persistence</td><td>Spring Data JPA + Hibernate</td></tr>
+                <tr><td>Frontend</td><td>HTML + CSS + JavaScript</td></tr>
+                <tr><td>Architecture</td><td>Controller &rarr; Service &rarr; Repository &rarr; Entity</td></tr>
+                <tr>
+                    <td>Modules</td>
+                    <td>
+                        <ul>
+                            <li>Well Management</li>
+                            <li>Telemetry Monitoring</li>
+                            <li>Pressure Monitoring</li>
+                            <li>Customer Management</li>
+                            <li>Energy Sales</li>
+                            <li>Maintenance</li>
+                            <li>Reports</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pressure Rule</td>
+                    <td>
+                        Pressure &lt; 20 &rarr; WARNING - PRESSURE DROP<br>
+                        Pressure &gt;= 20 &rarr; NORMAL
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const API = "/api/geothermal";
+const PRESSURE_THRESHOLD = 20;
+const WARNING_STATUS = "WARNING - PRESSURE DROP";
+
+
+/* -----------------------------
+   NAVIGATION
+----------------------------- */
+
+document.querySelectorAll(".nav-item").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+
+        btn.classList.add("active");
+        document.getElementById("page-" + btn.dataset.page).classList.add("active");
+
+        if (btn.dataset.page === "dashboard") loadDashboard();
+        if (btn.dataset.page === "reports") loadReportsPage();
+    });
+});
+
+
+/* -----------------------------
+   HELPERS
+----------------------------- */
+
+function showMessage(elementId, text, isError) {
+    const el = document.getElementById(elementId);
+    el.innerText = text;
+    el.className = "message " + (isError ? "error" : "success");
+}
+
+function money(value) {
+    const n = Number(value) || 0;
+    return "₹" + n.toLocaleString("en-IN", { maximumFractionDigits: 2 });
+}
+
+function wellPressureStatus(pressure) {
+    if (pressure === null || pressure === undefined) {
+        return "NORMAL";
+    }
+    return pressure < PRESSURE_THRESHOLD ? WARNING_STATUS : "NORMAL";
+}
+
+
+/* -----------------------------
+   DASHBOARD
+----------------------------- */
+
+async function loadDashboard() {
+
+    try {
+
+        const response = await fetch(API + "/reports/dashboard");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("dTotalWells").innerText = data.totalWells;
+        document.getElementById("dNormalWells").innerText = data.normalWells;
+        document.getElementById("dWarningWells").innerText = data.warningWells;
+        document.getElementById("dTotalCustomers").innerText = data.totalCustomers;
+        document.getElementById("dEnergySold").innerText = data.totalEnergySoldGJ + " GJ";
+        document.getElementById("dRevenue").innerText = money(data.totalRevenue);
+        document.getElementById("dExpense").innerText = money(data.maintenanceExpense);
+        document.getElementById("dNet").innerText = money(data.netOperationalAmount);
+
+        document.getElementById("ovEnergy").innerText = data.totalEnergySoldGJ;
+        document.getElementById("ovNet").innerText = Number(data.netOperationalAmount).toLocaleString("en-IN");
+        document.getElementById("barRevenueLabel").innerText = money(data.totalRevenue);
+        document.getElementById("barExpenseLabel").innerText = money(data.maintenanceExpense);
+
+        const total = Number(data.totalRevenue) + Number(data.maintenanceExpense);
+        const revenuePct = total > 0 ? (Number(data.totalRevenue) / total) * 100 : 0;
+        const expensePct = total > 0 ? (Number(data.maintenanceExpense) / total) * 100 : 0;
+
+        document.getElementById("barRevenue").style.width = revenuePct + "%";
+        document.getElementById("barExpense").style.width = expensePct + "%";
+
+    } catch (error) {
+
+        console.error(error);
+        document.getElementById("dashboardCards").insertAdjacentHTML(
+            "afterend",
+            "<p style='color:#a33'>Unable to load dashboard summary.</p>"
+        );
+
+    }
+
+    await loadDashboardWells();
+    await loadDashboardTelemetry();
+
+}
+
+async function loadDashboardWells() {
+
+    try {
+
+        const response = await fetch(API + "/wells");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const wells = await response.json();
+
+        const table = document.getElementById("dashboardWellTable");
+        table.innerHTML = "";
+
+        wells.forEach(well => {
+
+            const status = wellPressureStatus(well.pressure);
+            const statusClass = status === "NORMAL" ? "normal" : "warning";
+
+            table.innerHTML += `
+                <tr>
+                    <td>${well.wellId}</td>
+                    <td>${well.wellName}</td>
+                    <td>${well.location}</td>
+                    <td>${well.temperature != null ? well.temperature + " °C" : "-"}</td>
+                    <td>${well.pressure != null ? well.pressure : "-"}</td>
+                    <td><span class="status ${statusClass}">${status}</span></td>
+                </tr>
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+async function loadDashboardTelemetry() {
+
+    try {
+
+        const response = await fetch(API + "/reports/recent-telemetry");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const records = await response.json();
+
+        const table = document.getElementById("dashboardTelemetryTable");
+        table.innerHTML = "";
+
+        records.forEach(rec => {
+
+            const isWarning = rec.pressureStatus === WARNING_STATUS;
+            const statusClass = isWarning ? "warning" : "normal";
+
+            table.innerHTML += `
+                <tr class="${isWarning ? "warning-row" : ""}">
+                    <td>${rec.wellId}</td>
+                    <td>${rec.temperature}</td>
+                    <td>${rec.pressure}</td>
+                    <td>${rec.flowRate}</td>
+                    <td><span class="status ${statusClass}">${rec.pressureStatus}</span></td>
+                    <td>${rec.recordedAt ? rec.recordedAt.replace("T", " ") : ""}</td>
+                </tr>
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* -----------------------------
+   WELLS
+----------------------------- */
+
+async function loadWells() {
+
+    try {
+
+        const response = await fetch(API + "/wells");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const wells = await response.json();
+
+        const table = document.getElementById("wellTable");
+        table.innerHTML = "";
+
+        wells.forEach(well => {
+
+            const status = wellPressureStatus(well.pressure);
+            const statusClass = status === "NORMAL" ? "normal" : "warning";
+
+            table.innerHTML += `
+                <tr>
+                    <td>${well.wellId}</td>
+                    <td>${well.wellName}</td>
+                    <td>${well.location}</td>
+                    <td>${well.depth} m</td>
+                    <td>${well.temperature} °C</td>
+                    <td>${well.pressure}</td>
+                    <td><span class="status ${statusClass}">${status}</span></td>
+                    <td>
+                        <button class="small" onclick="editWell(${well.wellId})">Edit</button>
+                        <button class="small danger" onclick="deleteWell(${well.wellId})">Delete</button>
+                    </td>
+                </tr>
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("message", "Unable to load well data.", true);
+
+    }
+}
+
+function resetWellForm() {
+    document.getElementById("wellId").value = "";
+    document.getElementById("wellName").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("depth").value = "";
+    document.getElementById("temperature").value = "";
+    document.getElementById("pressure").value = "";
+    document.getElementById("wellStatus").value = "ACTIVE";
+    document.getElementById("wellFormTitle").innerText = "Add Well";
+    document.getElementById("wellSaveBtn").innerText = "Add Well";
+}
+
+async function editWell(id) {
+
+    try {
+
+        const response = await fetch(API + "/wells/" + id);
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const well = await response.json();
+
+        document.getElementById("wellId").value = well.wellId;
+        document.getElementById("wellName").value = well.wellName;
+        document.getElementById("location").value = well.location;
+        document.getElementById("depth").value = well.depth;
+        document.getElementById("temperature").value = well.temperature;
+        document.getElementById("pressure").value = well.pressure;
+        document.getElementById("wellStatus").value = well.status;
+
+        document.getElementById("wellFormTitle").innerText = "Edit Well";
+        document.getElementById("wellSaveBtn").innerText = "Update Well";
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("message", "Unable to load well for editing.", true);
+
+    }
+}
+
+async function saveWell() {
+
+    const id = document.getElementById("wellId").value;
+
+    const well = {
+        wellName: document.getElementById("wellName").value,
+        location: document.getElementById("location").value,
+        depth: Number(document.getElementById("depth").value),
+        temperature: Number(document.getElementById("temperature").value),
+        pressure: Number(document.getElementById("pressure").value),
+        status: document.getElementById("wellStatus").value
+    };
+
+    try {
+
+        const response = await fetch(
+            id ? API + "/wells/" + id : API + "/wells",
+            {
+                method: id ? "PUT" : "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(well)
+            }
+        );
+
+        if (response.ok) {
+
+            showMessage("message", id ? "Well updated successfully." : "Well added successfully.", false);
+            resetWellForm();
+            loadWells();
+
+        } else {
+
+            showMessage("message", "Unable to save well.", true);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("message", "Unable to save well.", true);
+
+    }
+
+}
+
+async function deleteWell(id) {
+
+    if (!confirm("Are you sure you want to delete this well?")) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(API + "/wells/" + id, { method: "DELETE" });
+
+        if (response.ok || response.status === 204) {
+
+            showMessage("message", "Well deleted successfully.", false);
+            loadWells();
+
+        } else {
+
+            showMessage("message", "Unable to delete well.", true);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("message", "Unable to delete well.", true);
+
+    }
+
+}
+
+
+/* -----------------------------
+   TELEMETRY
+----------------------------- */
+
+async function addTelemetry() {
+
+    const telemetry = {
+        wellId: Number(document.getElementById("telemetryWellId").value),
+        temperature: Number(document.getElementById("telemetryTemperature").value),
+        pressure: Number(document.getElementById("telemetryPressure").value),
+        flowRate: Number(document.getElementById("flowRate").value)
+    };
+
+    try {
+
+        const response = await fetch(API + "/telemetry", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(telemetry)
+        });
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const result = await response.json();
+
+        const isWarning = result.pressureStatus === WARNING_STATUS;
+
+        showMessage(
+            "telemetryMessage",
+            isWarning ? "⚠ WARNING - PRESSURE DROP" : "Telemetry recorded successfully. Pressure status: NORMAL",
+            isWarning
+        );
+
+        document.getElementById("telemetryResult").innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Temperature</th><th>Pressure</th><th>Flow Rate</th><th>Pressure Status</th><th>Recorded At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="${isWarning ? "warning-row" : ""}">
+                        <td>${result.temperature}</td>
+                        <td>${result.pressure}</td>
+                        <td>${result.flowRate}</td>
+                        <td><span class="status ${isWarning ? "warning" : "normal"}">${result.pressureStatus}</span></td>
+                        <td>${result.recordedAt ? result.recordedAt.replace("T", " ") : ""}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("telemetryMessage", "Unable to save telemetry.", true);
+
+    }
+
+}
+
+async function loadTelemetryHistory() {
+
+    const wellId = document.getElementById("historyWellId").value;
+
+    if (!wellId) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(API + "/telemetry/well/" + wellId);
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const records = await response.json();
+
+        const table = document.getElementById("telemetryHistoryTable");
+        table.innerHTML = "";
+
+        records.forEach(rec => {
+
+            const isWarning = rec.pressureStatus === WARNING_STATUS;
+
+            table.innerHTML += `
+                <tr class="${isWarning ? "warning-row" : ""}">
+                    <td>${rec.temperature}</td>
+                    <td>${rec.pressure}</td>
+                    <td>${rec.flowRate}</td>
+                    <td><span class="status ${isWarning ? "warning" : "normal"}">${rec.pressureStatus}</span></td>
+                    <td>${rec.recordedAt ? rec.recordedAt.replace("T", " ") : ""}</td>
+                </tr>
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("telemetryMessage", "Unable to load telemetry history.", true);
+
+    }
+
+}
+
+async function loadPressureWarnings() {
+
+    try {
+
+        const response = await fetch(API + "/reports/pressure-warnings");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const records = await response.json();
+
+        const table = document.getElementById("pressureWarningTable");
+        table.innerHTML = "";
+
+        records.forEach(rec => {
+            table.innerHTML += `
+                <tr class="warning-row">
+                    <td>${rec.wellId}</td>
+                    <td>${rec.temperature}</td>
+                    <td>${rec.pressure}</td>
+                    <td>${rec.flowRate}</td>
+                    <td>${rec.recordedAt ? rec.recordedAt.replace("T", " ") : ""}</td>
+                </tr>
+            `;
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* -----------------------------
+   CUSTOMERS
+----------------------------- */
+
+function resetCustomerForm() {
+    document.getElementById("customerId").value = "";
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerDistrict").value = "";
+    document.getElementById("customerContact").value = "";
+    document.getElementById("customerFormTitle").innerText = "Add Customer";
+    document.getElementById("customerSaveBtn").innerText = "Add Customer";
+}
+
+async function saveCustomer() {
+
+    const id = document.getElementById("customerId").value;
+
+    const customer = {
+        name: document.getElementById("customerName").value,
+        district: document.getElementById("customerDistrict").value,
+        contact: document.getElementById("customerContact").value
+    };
+
+    try {
+
+        const response = await fetch(
+            id ? API + "/customers/" + id : API + "/customers",
+            {
+                method: id ? "PUT" : "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(customer)
+            }
+        );
+
+        if (response.ok) {
+
+            showMessage("customerMessage", id ? "Customer updated successfully." : "Customer added successfully.", false);
+            resetCustomerForm();
+            loadCustomers();
+
+        } else {
+
+            showMessage("customerMessage", "Unable to save customer.", true);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("customerMessage", "Unable to save customer.", true);
+
+    }
+
+}
+
+async function editCustomer(id, name, district, contact) {
+    document.getElementById("customerId").value = id;
+    document.getElementById("customerName").value = name;
+    document.getElementById("customerDistrict").value = district;
+    document.getElementById("customerContact").value = contact || "";
+    document.getElementById("customerFormTitle").innerText = "Edit Customer";
+    document.getElementById("customerSaveBtn").innerText = "Update Customer";
+}
+
+async function deleteCustomer(id) {
+
+    if (!confirm("Are you sure you want to delete this customer?")) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(API + "/customers/" + id, { method: "DELETE" });
+
+        if (response.ok || response.status === 204) {
+
+            showMessage("customerMessage", "Customer deleted successfully.", false);
+            loadCustomers();
+
+        } else {
+
+            showMessage("customerMessage", "Unable to delete customer.", true);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("customerMessage", "Unable to delete customer.", true);
+
+    }
+
+}
+
+async function loadCustomers() {
+
+    try {
+
+        const response = await fetch(API + "/customers");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const customers = await response.json();
+
+        const table = document.getElementById("customerTable");
+        table.innerHTML = "";
+
+        customers.forEach(c => {
+            const safeContact = c.contact ? c.contact : "";
+            table.innerHTML += `
+                <tr>
+                    <td>${c.customerId}</td>
+                    <td>${c.name}</td>
+                    <td>${c.district}</td>
+                    <td>${safeContact}</td>
+                    <td>
+                        <button class="small" onclick='editCustomer(${c.customerId}, ${JSON.stringify(c.name)}, ${JSON.stringify(c.district)}, ${JSON.stringify(safeContact)})'>Edit</button>
+                        <button class="small danger" onclick="deleteCustomer(${c.customerId})">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("customerMessage", "Unable to load customer data.", true);
+
+    }
+
+}
+
+
+/* -----------------------------
+   ENERGY SALES
+----------------------------- */
+
+async function addSale() {
+
+    const sale = {
+        customerId: Number(document.getElementById("saleCustomerId").value),
+        energyGJ: Number(document.getElementById("saleEnergyGJ").value),
+        amount: Number(document.getElementById("saleAmount").value)
+    };
+
+    try {
+
+        const response = await fetch(API + "/sales", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(sale)
+        });
+
+        if (response.ok) {
+
+            showMessage("saleMessage", "Energy sale recorded successfully.", false);
+
+            document.getElementById("saleCustomerId").value = "";
+            document.getElementById("saleEnergyGJ").value = "";
+            document.getElementById("saleAmount").value = "";
+
+            loadSales();
+
+        } else {
+
+            showMessage("saleMessage", "Unable to save energy sale.", true);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("saleMessage", "Unable to save energy sale.", true);
+
+    }
+
+}
+
+async function loadSales() {
+
+    try {
+
+        const response = await fetch(API + "/sales");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const sales = await response.json();
+
+        const table = document.getElementById("saleTable");
+        table.innerHTML = "";
+
+        let totalEnergy = 0;
+        let totalRevenue = 0;
+
+        sales.forEach(s => {
+
+            totalEnergy += Number(s.energyGJ) || 0;
+            totalRevenue += Number(s.amount) || 0;
+
+            table.innerHTML += `
+                <tr>
+                    <td>${s.saleId}</td>
+                    <td>${s.customerId}</td>
+                    <td>${s.energyGJ}</td>
+                    <td>${s.amount}</td>
+                    <td>${s.saleDate ? s.saleDate : ""}</td>
+                    <td>${s.status}</td>
+                </tr>
+            `;
+        });
+
+        document.getElementById("salesTotalEnergy").innerText = totalEnergy + " GJ";
+        document.getElementById("salesTotalRevenue").innerText = money(totalRevenue);
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("saleMessage", "Unable to load energy sales.", true);
+
+    }
+
+}
+
+
+/* -----------------------------
+   MAINTENANCE
+----------------------------- */
+
+async function addMaintenance() {
+
+    const maintenance = {
+        wellId: Number(document.getElementById("maintenanceWellId").value),
+        vendor: document.getElementById("maintenanceVendor").value,
+        description: document.getElementById("maintenanceDescription").value,
+        cost: Number(document.getElementById("maintenanceCost").value)
+    };
+
+    try {
+
+        const response = await fetch(API + "/maintenance", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(maintenance)
+        });
+
+        if (response.ok) {
+
+            showMessage("maintenanceMessage", "Maintenance record added successfully.", false);
+
+            document.getElementById("maintenanceWellId").value = "";
+            document.getElementById("maintenanceVendor").value = "";
+            document.getElementById("maintenanceDescription").value = "";
+            document.getElementById("maintenanceCost").value = "";
+
+            loadMaintenance();
+
+        } else {
+
+            showMessage("maintenanceMessage", "Unable to save maintenance record.", true);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("maintenanceMessage", "Unable to save maintenance record.", true);
+
+    }
+
+}
+
+async function loadMaintenance() {
+
+    try {
+
+        const response = await fetch(API + "/maintenance");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const records = await response.json();
+
+        const table = document.getElementById("maintenanceTable");
+        table.innerHTML = "";
+
+        let totalCost = 0;
+
+        records.forEach(m => {
+
+            totalCost += Number(m.cost) || 0;
+
+            table.innerHTML += `
+                <tr>
+                    <td>${m.maintenanceId}</td>
+                    <td>${m.wellId}</td>
+                    <td>${m.vendor}</td>
+                    <td>${m.description}</td>
+                    <td>${m.cost}</td>
+                    <td>${m.maintenanceDate ? m.maintenanceDate : ""}</td>
+                    <td>${m.status ? m.status : ""}</td>
+                </tr>
+            `;
+        });
+
+        document.getElementById("maintenanceTotalCost").innerText = money(totalCost);
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage("maintenanceMessage", "Unable to load maintenance records.", true);
+
+    }
+
+}
+
+
+/* -----------------------------
+   REPORTS PAGE
+----------------------------- */
+
+async function loadReportsPage() {
+
+    try {
+
+        const response = await fetch(API + "/reports/dashboard");
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("rTotalWells").innerText = data.totalWells;
+        document.getElementById("rNormalWells").innerText = data.normalWells;
+        document.getElementById("rWarningWells").innerText = data.warningWells;
+        document.getElementById("rTotalCustomers").innerText = data.totalCustomers;
+        document.getElementById("rEnergySold").innerText = data.totalEnergySoldGJ + " GJ";
+        document.getElementById("rRevenue").innerText = money(data.totalRevenue);
+        document.getElementById("rExpense").innerText = money(data.maintenanceExpense);
+        document.getElementById("rNet").innerText = money(data.netOperationalAmount);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+    try {
+
+        const response = await fetch(API + "/reports/pressure-warnings");
+
+        if (response.ok) {
+
+            const records = await response.json();
+            const table = document.getElementById("reportWarningTable");
+            table.innerHTML = "";
+
+            records.forEach(rec => {
+                table.innerHTML += `
+                    <tr class="warning-row">
+                        <td>${rec.wellId}</td>
+                        <td>${rec.temperature}</td>
+                        <td>${rec.pressure}</td>
+                        <td>${rec.flowRate}</td>
+                        <td>${rec.recordedAt ? rec.recordedAt.replace("T", " ") : ""}</td>
+                    </tr>
+                `;
+            });
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+    try {
+
+        const response = await fetch(API + "/reports/recent-sales");
+
+        if (response.ok) {
+
+            const sales = await response.json();
+            const table = document.getElementById("reportSalesTable");
+            table.innerHTML = "";
+
+            sales.forEach(s => {
+                table.innerHTML += `
+                    <tr>
+                        <td>${s.saleId}</td>
+                        <td>${s.customerId}</td>
+                        <td>${s.energyGJ}</td>
+                        <td>${s.amount}</td>
+                        <td>${s.saleDate ? s.saleDate : ""}</td>
+                        <td>${s.status}</td>
+                    </tr>
+                `;
+            });
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+    try {
+
+        const response = await fetch(API + "/reports/recent-maintenance");
+
+        if (response.ok) {
+
+            const records = await response.json();
+            const table = document.getElementById("reportMaintenanceTable");
+            table.innerHTML = "";
+
+            records.forEach(m => {
+                table.innerHTML += `
+                    <tr>
+                        <td>${m.maintenanceId}</td>
+                        <td>${m.wellId}</td>
+                        <td>${m.vendor}</td>
+                        <td>${m.cost}</td>
+                        <td>${m.maintenanceDate ? m.maintenanceDate : ""}</td>
+                        <td>${m.status ? m.status : ""}</td>
+                    </tr>
+                `;
+            });
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* -----------------------------
+   INITIAL LOAD
+----------------------------- */
+
+loadDashboard();
+loadWells();
+loadCustomers();
+loadSales();
+loadMaintenance();
+
+</script>
+
+</body>
+</html>
